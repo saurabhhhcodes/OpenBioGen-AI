@@ -1,71 +1,53 @@
 """
-Streamlit App Entry Point for OpenBioGen AI
-This file serves as the main entry point for Streamlit Cloud deployment.
+Minimal Streamlit App for Deployment Testing
+This is a simplified version to help identify deployment issues.
 """
 
+import streamlit as st
 import os
 import sys
 import logging
-import traceback
-from pathlib import Path
 
-# Configure logging to both console and file
-log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# Basic logging configuration
 logging.basicConfig(
-    level=logging.DEBUG,
-    format=log_format,
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler('app.log')
+        logging.StreamHandler(sys.stdout)
     ]
 )
 logger = logging.getLogger(__name__)
 
-def log_environment():
-    """Log important environment information."""
-    logger.info("=" * 80)
-    logger.info(f"Starting OpenBioGen AI application")
-    logger.info(f"Python version: {sys.version}")
-    logger.info(f"Working directory: {os.getcwd()}")
-    logger.info(f"Environment variables: {dict(os.environ)}")
-    logger.info("=" * 80)
-
-def check_dependencies():
-    """Check and log important dependencies."""
+def main():
+    """Main application function."""
     try:
-        import pandas as pd
-        import streamlit as st
-        logger.info(f"Pandas version: {pd.__version__}")
-        logger.info(f"Streamlit version: {st.__version__}")
-    except ImportError as e:
-        logger.error(f"Dependency error: {str(e)}")
-        raise
-
-def main_wrapper():
-    """Wrapper function to handle main execution with error handling."""
-    try:
-        # Add the project root to the Python path
-        project_root = str(Path(__file__).parent.resolve())
-        if project_root not in sys.path:
-            sys.path.append(project_root)
+        # Basic app configuration
+        st.set_page_config(
+            page_title="OpenBioGen AI - Test",
+            page_icon="🧪",
+            layout="centered"
+        )
         
-        log_environment()
-        check_dependencies()
+        st.title("OpenBioGen AI - Test Deployment")
+        st.write("This is a test deployment to verify Streamlit Cloud functionality.")
         
-        # Import the main function from advanced_main
-        from advanced_main import main
+        # Display system information
+        with st.expander("System Information"):
+            st.write(f"Python version: {sys.version}")
+            st.write(f"Current directory: {os.getcwd()}")
+            st.write(f"Files in directory: {os.listdir('.')}")
+            
+        # Test basic functionality
+        if st.button("Test Button"):
+            st.success("Success! Basic functionality is working.")
+            
+        logger.info("Test app initialized successfully")
         
-        # Run the main application
-        main()
-        
-    except ImportError as e:
-        logger.error(f"Import error: {str(e)}")
-        logger.error(traceback.format_exc())
-        raise
     except Exception as e:
-        logger.error(f"Fatal error in application: {str(e)}")
-        logger.error(traceback.format_exc())
+        error_msg = f"Error in test app: {str(e)}"
+        logger.error(error_msg)
+        st.error(f"An error occurred: {error_msg}")
         raise
 
 if __name__ == "__main__":
-    main_wrapper()
+    main()
