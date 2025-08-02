@@ -1,0 +1,23 @@
+2025-08-02 18:49:36,747 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 0.001s
+2025-08-02 18:54:22,004 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 4.883s
+2025-08-02 18:56:27,960 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 3.264s
+2025-08-02 18:58:46,700 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 1.960s
+2025-08-02 19:06:33,982 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 2.984s
+2025-08-02 19:06:33,982 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 2.984s
+2025-08-02 19:19:18,476 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 2.247s
+2025-08-02 19:20:06,350 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 2.517s
+2025-08-02 19:21:36,370 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 7.692s
+2025-08-02 19:21:54,893 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 1.755s
+2025-08-02 19:22:29,092 - OpenBioGenAI - ERROR - log_error:68 - Error in Global database analysis for BRCA1: {'error_type': 'TypeError', 'error_message': 'monitor_performance.<locals>.decorator() takes 1 positional argument but 2 were given', 'context': 'Global database analysis for BRCA1', 'timestamp': '2025-08-02T19:22:29.090765', 'stack_trace': 'Traceback (most recent call last):\n  File "/home/saurabh/CascadeProjects/OpenBioGen-AI/advanced_main.py", line 732, in main\n    result = enhanced_analysis_engine.comprehensive_gene_analysis(gene_query)\n  File "/home/saurabh/CascadeProjects/OpenBioGen-AI/performance_optimizer.py", line 137, in wrapper\n    result = func(*args, **kwargs)\nTypeError: monitor_performance.<locals>.decorator() takes 1 positional argument but 2 were given\n'}
+2025-08-02 20:09:09,705 - OpenBioGenAI - ERROR - log_error:68 - Error in Compound analysis critical error: {'error_type': 'AttributeError', 'error_message': "'AdvancedValidator' object has no attribute 'validate_input'", 'context': 'Compound analysis critical error', 'timestamp': '2025-08-02T20:09:09.705546', 'stack_trace': 'Traceback (most recent call last):\n  File "/home/saurabh/CascadeProjects/OpenBioGen-AI/enhanced_analysis_engine.py", line 153, in comprehensive_compound_analysis\n    validation = self.validator.validate_input(compound_name, max_length=100)\nAttributeError: \'AdvancedValidator\' object has no attribute \'validate_input\'\n'}
+2025-08-02 20:11:34,017 - OpenBioGenAI - ERROR - log_error:68 - Error in Compound analysis critical error: {'error_type': 'TypeError', 'error_message': "'<=' not supported between instances of 'int' and 'str'", 'context': 'Compound analysis critical error', 'timestamp': '2025-08-02T20:11:34.016931', 'stack_trace': 'Traceback (most recent call last):\n  File "/home/saurabh/CascadeProjects/OpenBioGen-AI/enhanced_analysis_engine.py", line 175, in comprehensive_compound_analysis\n    \'drug_likeness\': self._assess_drug_likeness(pubchem_result),\n  File "/home/saurabh/CascadeProjects/OpenBioGen-AI/enhanced_analysis_engine.py", line 596, in _assess_drug_likeness\n    drug_like = 150 <= mw <= 500  # Simple MW-based assessment\nTypeError: \'<=\' not supported between instances of \'int\' and \'str\'\n'}
+2025-08-02 20:16:48,793 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 6.996s
+2025-08-02 20:16:53,786 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 4.993s
+2025-08-02 20:16:58,968 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 5.180s
+2025-08-02 20:17:04,215 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 5.247s
+2025-08-02 20:17:12,838 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 8.621s
+2025-08-02 20:17:17,563 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 4.724s
+2025-08-02 20:17:24,352 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 6.787s
+2025-08-02 20:17:29,677 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 5.322s
+2025-08-02 20:17:36,455 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 6.777s
+2025-08-02 20:17:41,057 - OpenBioGenAI - INFO - log_performance:86 - Performance: wrapper took 4.600s
