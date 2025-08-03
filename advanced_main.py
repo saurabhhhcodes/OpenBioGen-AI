@@ -13,6 +13,18 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import base64
+
+# LangChain imports
+try:
+    from langchain_community.llms import HuggingFacePipeline
+    from langchain.prompts import PromptTemplate
+    from langchain.chains import LLMChain
+    from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+    import torch
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+    print("Warning: LangChain not available. Using fallback analysis.")
 from advanced_core import (
     AdvancedDataIntegrator, 
     VisualizationEngine, 
@@ -201,6 +213,42 @@ class AdvancedOpenBioGenAI:
         self.clinical_support = ClinicalDecisionSupport()
         self.report_generator = ReportGenerator()
         
+        # Initialize LangChain LLM
+        self.llm = None
+        if LANGCHAIN_AVAILABLE:
+            try:
+                # Get HuggingFace token from environment
+                hf_token = os.getenv("HUGGINGFACE_API_TOKEN")
+                
+                # Initialize LLM with lazy loading
+                model_name = "microsoft/DialoGPT-small"
+                tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=hf_token)
+                model = AutoModelForCausalLM.from_pretrained(model_name, use_auth_token=hf_token)
+                
+                # Set pad token
+                if tokenizer.pad_token is None:
+                    tokenizer.pad_token = tokenizer.eos_token
+                
+                # Create pipeline
+                pipe = pipeline(
+                    "text-generation",
+                    model=model,
+                    tokenizer=tokenizer,
+                    max_new_tokens=200,
+                    pad_token_id=tokenizer.eos_token_id,
+                    do_sample=True,
+                    temperature=0.7,
+                    top_p=0.9
+                )
+                
+                # Create LangChain LLM
+                self.llm = HuggingFacePipeline(pipeline=pipe)
+                logger.info("LangChain LLM initialized successfully")
+                
+            except Exception as e:
+                logger.warning(f"LLM initialization failed: {e}")
+                self.llm = None
+        
         # Initialize session state
         if 'user_history' not in st.session_state:
             st.session_state.user_history = []
@@ -284,6 +332,9 @@ class AdvancedOpenBioGenAI:
                 context="clinical_recommendations"
             )
             
+            # Generate AI prediction using LangChain if available
+            ai_prediction = self._generate_ai_prediction(clean_gene, clean_disease, search_results)
+            
             # Create comprehensive result
             base_result = {
                 'gene': clean_gene,
@@ -291,6 +342,9 @@ class AdvancedOpenBioGenAI:
                 'confidence': search_results.get('confidence', 'Medium'),
                 'confidence_score': search_results.get('confidence_score', 0.7),
                 'prediction': search_results.get('summary', 'Analysis completed'),
+                'ai_prediction': ai_prediction.get('ai_prediction', 'AI analysis not available'),
+                'ai_confidence': ai_prediction.get('confidence_score', 0.5),
+                'ai_reasoning': ai_prediction.get('reasoning', 'No AI reasoning available'),
                 'risk_category': risk_assessment.get('risk_category', 'Unknown'),
                 'risk_score': risk_assessment.get('risk_score', 0.0),
                 'clinical_recommendations': recommendations.get('recommendations', []),
@@ -327,6 +381,71 @@ class AdvancedOpenBioGenAI:
         
         progress_bar.empty()
         return results
+    
+    def _generate_ai_prediction(self, gene: str, disease: str, search_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Generate AI prediction using LangChain LLM"""
+        if not self.llm:
+            return {
+                "ai_prediction": "LLM not available",
+                "confidence_score": 0.5,
+                "reasoning": "Using fallback analysis"
+            }
+        
+        try:
+            # Create prompt template
+            prompt_template = PromptTemplate(
+                input_variables=["gene", "disease", "literature"],
+                template="""
+                Analyze the association between gene {gene} and disease {disease} based on the following literature:
+                
+                Literature: {literature}
+                
+                Provide a comprehensive analysis including:
+                1. Association strength (High/Medium/Low)
+                2. Confidence level (0-1)
+                3. Key evidence
+                4. Clinical implications
+                5. Recommendations
+                
+                Analysis:
+                """
+            )
+            
+            # Create LangChain chain
+            chain = LLMChain(llm=self.llm, prompt=prompt_template)
+            
+            # Prepare literature context
+            literature_context = search_results.get('summary', 'Limited literature available')
+            
+            # Generate prediction
+            result = chain.run({
+                "gene": gene,
+                "disease": disease,
+                "literature": literature_context
+            })
+            
+            # Parse the result (simplified parsing)
+            confidence_score = 0.7  # Default confidence
+            if "high" in result.lower():
+                confidence_score = 0.9
+            elif "medium" in result.lower():
+                confidence_score = 0.7
+            elif "low" in result.lower():
+                confidence_score = 0.4
+            
+            return {
+                "ai_prediction": result.strip(),
+                "confidence_score": confidence_score,
+                "reasoning": "AI-generated analysis using LangChain"
+            }
+            
+        except Exception as e:
+            logger.error(f"AI prediction failed: {e}")
+            return {
+                "ai_prediction": "AI analysis failed",
+                "confidence_score": 0.5,
+                "reasoning": f"Error: {str(e)}"
+            }
 
 def create_enhanced_sample_data() -> pd.DataFrame:
     """Create enhanced sample gene-disease pairs"""
