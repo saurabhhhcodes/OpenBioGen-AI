@@ -1,5 +1,7 @@
 # Environment variables
 .env
+.env.local
+.env.production
 
 # Python
 __pycache__/
@@ -24,31 +26,9 @@ wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
 # Virtual environments
-.env
-.venv
-env/
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
@@ -68,3 +48,40 @@ venv.bak/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Logs
+*.log
+logs/
+security_logs/
+
+# Cache
+cache/
+*.cache
+
+# Memory storage
+memory_storage/
+*.db
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Model files (if downloaded locally)
+models/
+*.bin
+*.safetensors
+
+# API keys and secrets
+secrets.json
+config.json
+credentials.json
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Docker
+.dockerignore
+
+# Deployment
+.heroku/
