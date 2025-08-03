@@ -7,6 +7,12 @@
 [![LangChain](https://img.shields.io/badge/LangChain-00FF00?style=for-the-badge&logo=langchain&logoColor=black)](https://langchain.com/)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-FF6B6B?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co/)
 
+## 🚀 **LIVE DEMO**
+
+**🌐 [OpenBioGen AI - Advanced Platform](https://openbiogen-ai.streamlit.app/)**
+
+*Fully functional with all advanced features and API integration!*
+
 ## 🚀 Overview
 
 OpenBioGen AI is a comprehensive bioinformatics platform that combines advanced AI capabilities with extensive biological database integration. Built with Streamlit, LangChain, and open-source LLMs, it provides professional-grade gene-disease association analysis with clinical decision support.
